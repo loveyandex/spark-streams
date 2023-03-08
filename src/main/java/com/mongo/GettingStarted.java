@@ -15,15 +15,20 @@ public final class GettingStarted {
     SparkSession spark = SparkSession.builder()
         .master("local")
         .appName("MongoSparkConnectorIntro")
-        .config("spark.mongodb.read.connection.uri", "mongodb://127.0.0.1/test.myCollection")
-        .config("spark.mongodb.write.connection.uri", "mongodb://127.0.0.1/test.myCollection")
+        .config("spark.mongodb.read.connection.uri", "mongodb://127.0.0.1/matching-engine.orders")
+        .config("spark.mongodb.write.connection.uri", "mongodb://127.0.0.1/matching-engine.orders")
         .getOrCreate();
 
     Dataset<Row> implicitDS = spark.read().format("mongodb").load();
+
+    System.out.println("---------------------------bfore orderby------------------------");
+    Dataset<Row> orderBy = implicitDS.orderBy(org.apache.spark.sql.functions.col("amount").desc());
+
     implicitDS.printSchema();
     implicitDS.show();
 
     // Application logic
+    orderBy.show();
 
   }
 }
