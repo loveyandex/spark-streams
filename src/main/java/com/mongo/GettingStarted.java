@@ -3,6 +3,7 @@ package com.mongo;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
+import static org.apache.spark.sql.functions.*;
 
 public final class GettingStarted {
 
@@ -24,11 +25,16 @@ public final class GettingStarted {
     System.out.println("---------------------------bfore orderby------------------------");
     Dataset<Row> orderBy = implicitDS.orderBy(org.apache.spark.sql.functions.col("amount").desc());
 
+    orderBy.persist();
+
+    
     implicitDS.printSchema();
     implicitDS.show();
-
+    
     // Application logic
     orderBy.show();
+    
+    orderBy.select(org.apache.spark.sql.functions.col("amount")).agg(sum("amount").as("sum")).show();
 
   }
 }
