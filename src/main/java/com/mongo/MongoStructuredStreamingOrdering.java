@@ -12,7 +12,7 @@ import static org.apache.spark.sql.functions.*;
 
 import java.util.concurrent.TimeoutException;
 
-public final class MongoStructuredStreaming {
+public final class MongoStructuredStreamingOrdering {
 
   public static void main(final String[] args) {
     /*
@@ -23,7 +23,8 @@ public final class MongoStructuredStreaming {
     SparkSession spark = SparkSession.builder()
         .master("local")
         .appName("read_example121221")
-        .config("spark.mongodb.read.connection.uri", "mongodb://127.0.0.1:30001,127.0.0.1:30002,127.0.0.1:30003/?replicaSet=my-replica-set")
+        .config("spark.mongodb.read.connection.uri",
+            "mongodb://127.0.0.1:30001,127.0.0.1:30002,127.0.0.1:30003/?replicaSet=my-replica-set")
 
         // .config("spark.mongodb.write.connection.uri",
         // "mongodb://127.0.0.1/matching-engine.orders")
@@ -35,14 +36,21 @@ public final class MongoStructuredStreaming {
         .option("database", "stocks").option("collection", "orders")
         .option("spark.mongodb.change.stream.publish.full.document.only", "true")
         .option("forceDeleteTempCheckpointLocation", "true")
+
         .load();
     load.printSchema();
 
-    DataStreamWriter<Row> dataStreamWriter = load
+    // Dataset<Row> orderBy =
+    // load.sort(org.apache.spark.sql.functions.col("amount").desc());
+    // orderBy.show();
+
+    Dataset<Row> ordertypes = load.groupBy("type").count();
+
+    DataStreamWriter<Row> dataStreamWriter = ordertypes
         // manipulate your streaming data
         .writeStream()
         .format("console")
-        .trigger(Trigger.Continuous("5 seconds"))
+        .trigger(Trigger.ProcessingTime("5 seconds"))
         .outputMode("complete");
 
     // run the query

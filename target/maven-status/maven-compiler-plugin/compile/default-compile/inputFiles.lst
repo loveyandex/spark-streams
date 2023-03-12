@@ -1,6 +1,7 @@
 f:\spark\spark-sql\src\main\java\com\JavaRecord.java
 f:\spark\spark-sql\src\main\java\com\JavaStatefulNetworkWordCount.java
 f:\spark\spark-sql\src\main\java\com\OrderRecord.java
+f:\spark\spark-sql\src\main\java\com\mongo\MongoStructuredStreamingOrdering.java
 f:\spark\spark-sql\src\main\java\com\mongo\MongoStructuredStreaming.java
 f:\spark\spark-sql\src\main\java\com\sql\JavaStructuredNetworkWordCount.java
 f:\spark\spark-sql\src\main\java\com\JavaSqlNetworkWordCount.java

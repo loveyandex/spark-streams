@@ -5,6 +5,7 @@ import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import static org.apache.spark.sql.functions.*;
 
+
 public final class GettingStarted {
 
   public static void main(final String[] args) throws InterruptedException {
